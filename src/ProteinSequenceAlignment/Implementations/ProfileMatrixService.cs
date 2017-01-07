@@ -12,11 +12,10 @@ namespace ProteinSequenceAlignment.Implementations
 
 			foreach (var sequence in multialignment.Sequences)
 			{
-				for (var i = 0; i < sequence.Length; ++i)
+				for (var col = 0; col < sequence.Length; ++col)
 				{
-					var c = sequence[i];
+					var c = sequence[col];
 					var row = Dictionary.IndexOf(c);
-					var col = i;
 
 					profileMatrix[col, row] += 1 / (float)multialignment.Sequences.Count;
 				}

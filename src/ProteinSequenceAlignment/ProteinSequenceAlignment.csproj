@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Implementations\ConsensusSequenceService.cs" />
     <Compile Include="Implementations\NeedlemanWunschService.cs" />
     <Compile Include="Implementations\ProfileMatrixService.cs" />
     <Compile Include="Models\Multialignment.cs" />
