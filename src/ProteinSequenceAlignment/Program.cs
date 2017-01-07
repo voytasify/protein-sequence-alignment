@@ -22,11 +22,18 @@ namespace ProteinSequenceAlignment
 			var consensusSequence = ConsesnsusSequenceService.ComputeConsensusSequence(SimilarityMatrix, profileMatrix);
 
 			Console.WriteLine($"CONSENUS SEQUENCE: {consensusSequence}");
+
+			var secondProfileMatrix = ProfileMatrixService.ComputeProfileMatrix(Multialignments[1]);
+			var secondConsensusSequence = ConsesnsusSequenceService.ComputeConsensusSequence(SimilarityMatrix, secondProfileMatrix);
+			var wunschOutputSequence = NeedlemanWunschService.Merge(consensusSequence, secondConsensusSequence);
+
+			Console.WriteLine($"NeedlemanWunsch otput:\n {wunschOutputSequence}");
 			Console.Read();
 		}
 
 		public static IDataProvider DataProvider = new DataProvider();
 		public static IProfileMatrixService ProfileMatrixService = new ProfileMatrixService();
 		public static IConsesnsusSequenceService ConsesnsusSequenceService = new ConsensusSequenceService();
+		public static INeedlemanWunschService NeedlemanWunschService = new NeedlemanWunschService();
 	}
 }

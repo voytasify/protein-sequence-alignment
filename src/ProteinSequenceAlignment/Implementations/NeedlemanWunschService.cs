@@ -94,10 +94,7 @@ namespace ProteinSequenceAlignment.Implementations
 				second = otherSequence;
 			}
 
-			PrintMatrix(T, m + 1, n + 1);
-			var result = new Sequence { Score = M[m, n], Path = traceBack, One = first, Two = second };
-			Console.WriteLine(result.ToString());
-			return result;
+			return new Sequence { Score = M[m, n], Path = traceBack, One = first, Two = second };
 		}
 
 		private int LookUpIndex(char character)
@@ -113,19 +110,6 @@ namespace ProteinSequenceAlignment.Implementations
 				throw new ArgumentException($"Similarity matrix does not contain value for specified keys: {character}, {otherCharIndex}");
 
 			return Program.SimilarityMatrix[charIndex, otherCharIndex];
-		}
-
-		private void PrintMatrix<T>(T[,] A, int I, int J)
-		{
-			for (var i = 0; i < I; i++)
-			{
-				for (var j = 0; j < J; j++)
-				{
-					var v = A[i, j];
-					Console.Write(v + " ");
-				}
-				Console.WriteLine();
-			}
 		}
 
 		private string ParseTraceBack(string[,] T, int I, int J)
