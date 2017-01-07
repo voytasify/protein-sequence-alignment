@@ -43,8 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Multialignment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IConsesnsusSequenceService.cs" />
+    <Compile Include="Interfaces\INeedlemanWunschService.cs" />
+    <Compile Include="Interfaces\IDataProvider.cs" />
+    <Compile Include="Interfaces\IProfileMatrixService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ProteinSequenceAlignment.Models;
 
 namespace ProteinSequenceAlignment
 {
-	class Program
-	{
+	public class Program
+	{			
+		private static IEnumerable<Multialignment> _multialignments;
+		private static float[,] _similarityMatrix;
+		private static string _dictionary;
+
 		static void Main(string[] args)
 		{
 		}
