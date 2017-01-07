@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ProteinSequenceAlignment.Interfaces;
+using ProteinSequenceAlignment.Models;
 
 namespace ProteinSequenceAlignment.Implementations
 {
 	public class NeedlemanWunschService : INeedlemanWunschService
 	{
-		static readonly string NL = Environment.NewLine;
-
 		// trace back
 		const string DONE = @"�";
 		const string DIAG = @"\";
@@ -19,43 +17,31 @@ namespace ProteinSequenceAlignment.Implementations
 		// print alignment
 		const string GAP = @"-";
 
-		public string Merge(string sequence, string otherSequence)
+		public Sequence Merge(string sequence, string otherSequence)
 		{
-			var res = SequenceAlign(sequence, otherSequence);
-			return string.Empty;
-		}
+			var m = sequence.Length;
+			var n = otherSequence.Length;
 
-		private int LookUpIndex(char character)
-		{
-			return Program.Dictionary.IndexOf(character);
-		}
+			var M = new float[m + 1, n + 1];
+			var T = new string[m + 1, n + 1];
 
-		Sequence SequenceAlign(string xs, string ys)
-		{
-			int m = xs.Length;
-			int n = ys.Length;
-
-			// init the matrix
-			var M = new float[m + 1, n + 1]; // dynamic programming buttom up memory table
-			var T = new string[m + 1, n + 1]; // trace back
-
-			for (int i = 0; i < m + 1; i++)
+			for (var i = 0; i < m + 1; i++)
 				M[i, 0] = i;
-			for (int j = 0; j < n + 1; j++)
+			for (var j = 0; j < n + 1; j++)
 				M[0, j] = j;
 
 			T[0, 0] = DONE;
-			for (int i = 1; i < m + 1; i++)
+			for (var i = 1; i < m + 1; i++)
 				T[i, 0] = UP;
-			for (int j = 1; j < n + 1; j++)
+			for (var j = 1; j < n + 1; j++)
 				T[0, j] = LEFT;
 
 			// calc
-			for (int i = 1; i < m + 1; i++)
+			for (var i = 1; i < m + 1; i++)
 			{
-				for (int j = 1; j < n + 1; j++)
+				for (var j = 1; j < n + 1; j++)
 				{
-					var alpha = Alpha(xs.ElementAt(i - 1), ys.ElementAt(j - 1));
+					var alpha = Alpha(sequence.ElementAt(i - 1), otherSequence.ElementAt(j - 1));
 					var diag = alpha + M[i - 1, j - 1];
 					var up = M[i - 1, j];
 					var left = M[i, j - 1];
@@ -76,22 +62,22 @@ namespace ProteinSequenceAlignment.Implementations
 			var sb = new StringBuilder();
 			string first, second;
 
-			if (xs.Length != ys.Length)
+			if (sequence.Length != otherSequence.Length)
 			{
 				string s;
-				if (xs.Length > ys.Length)
+				if (sequence.Length > otherSequence.Length)
 				{
-					s = ys;
-					first = xs;
+					s = otherSequence;
+					first = sequence;
 				}
 				else
 				{
-					s = xs;
-					first = ys;
+					s = sequence;
+					first = otherSequence;
 				}
 
 
-				int i = 0;
+				var i = 0;
 				foreach (var trace in traceBack)
 				{
 					if (trace.ToString() == DIAG)
@@ -104,20 +90,22 @@ namespace ProteinSequenceAlignment.Implementations
 			}
 			else
 			{
-				first = xs;
-				second = ys;
+				first = sequence;
+				second = otherSequence;
 			}
 
-			//PL("\nScore table");
-			//PrintMatrix(M, m + 1, n + 1);
-			//PL("\nTraceBack");
 			PrintMatrix(T, m + 1, n + 1);
-
-			var sequence = new Sequence() { Score = M[m, n], Path = traceBack, One = first, Two = second };
-			return sequence;
+			var result = new Sequence { Score = M[m, n], Path = traceBack, One = first, Two = second };
+			Console.WriteLine(result.ToString());
+			return result;
 		}
 
-		float Alpha(char character, char otherCharacter)
+		private int LookUpIndex(char character)
+		{
+			return Program.Dictionary.IndexOf(character);
+		}
+
+		private float Alpha(char character, char otherCharacter)
 		{
 			var charIndex = LookUpIndex(character);
 			var otherCharIndex = LookUpIndex(otherCharacter);
@@ -127,11 +115,11 @@ namespace ProteinSequenceAlignment.Implementations
 			return Program.SimilarityMatrix[charIndex, otherCharIndex];
 		}
 
-		static void PrintMatrix<T>(T[,] A, int I, int J)
+		private void PrintMatrix<T>(T[,] A, int I, int J)
 		{
-			for (int i = 0; i < I; i++)
+			for (var i = 0; i < I; i++)
 			{
-				for (int j = 0; j < J; j++)
+				for (var j = 0; j < J; j++)
 				{
 					var v = A[i, j];
 					Console.Write(v + " ");
@@ -140,12 +128,12 @@ namespace ProteinSequenceAlignment.Implementations
 			}
 		}
 
-		static string ParseTraceBack(string[,] T, int I, int J)
+		private string ParseTraceBack(string[,] T, int I, int J)
 		{
 			var sb = new StringBuilder();
-			int i = I - 1;
-			int j = J - 1;
-			string path = T[i, j];
+			var i = I - 1;
+			var j = J - 1;
+			var path = T[i, j];
 			while (path != DONE)
 			{
 				sb.Append(path);
@@ -164,33 +152,20 @@ namespace ProteinSequenceAlignment.Implementations
 			return ReverseString(sb.ToString());
 		}
 
-		static string ReverseString(string s)
+		private string ReverseString(string s)
 		{
-			char[] arr = s.ToCharArray();
+			var arr = s.ToCharArray();
 			Array.Reverse(arr);
 			return new string(arr);
 		}
 
-		static float Max(float a, float b, float c)
+		private float Max(float a, float b, float c)
 		{
 			if (a >= b && a >= c)
 				return a;
 			if (b >= a && b >= c)
 				return b;
 			return c;
-		}
-
-		class Sequence
-		{
-			public float Score { get; set; }
-			public string Path { get; set; }
-			public string One { get; set; }
-			public string Two { get; set; }
-			public new string ToString()
-			{
-				var s = string.Format("score = {0}{1}one = {2}{3}two = {4}\n\n", Score, NL, One, NL, Two);
-				return s;
-			}
 		}
 	}
 }

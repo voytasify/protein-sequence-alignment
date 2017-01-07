@@ -1,7 +1,9 @@
-﻿namespace ProteinSequenceAlignment.Interfaces
+﻿using ProteinSequenceAlignment.Models;
+
+namespace ProteinSequenceAlignment.Interfaces
 {
 	public interface INeedlemanWunschService
 	{
-		string Merge(string sequence, string otherSequence);
+		Sequence Merge(string sequence, string otherSequence);
 	}
 }
