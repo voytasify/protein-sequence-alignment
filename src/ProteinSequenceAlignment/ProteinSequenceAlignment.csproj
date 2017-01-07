@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\NeedlemanWunschService.cs" />
+    <Compile Include="Implementations\ProfileMatrixService.cs" />
     <Compile Include="Models\Multialignment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

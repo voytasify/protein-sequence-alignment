@@ -7,7 +7,7 @@ namespace ProteinSequenceAlignment
 {
 	public class Program
 	{
-		public static IEnumerable<Multialignment> Multialignments;
+		public static IList<Multialignment> Multialignments;
 		public static float[,] SimilarityMatrix;
 		public static string Dictionary;
 
@@ -16,8 +16,11 @@ namespace ProteinSequenceAlignment
 			Multialignments = DataProvider.GetMultialignments();
 			SimilarityMatrix = DataProvider.GetSimilarityMatrix();
 			Dictionary = DataProvider.GetDictionary();
+
+			var profileMatrix = ProfileMatrixService.ComputeProfileMatrix(Multialignments[0]);
 		}
 
 		public static IDataProvider DataProvider = new DataProvider();
+		public static IProfileMatrixService ProfileMatrixService = new ProfileMatrixService();
 	}
 }
