@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Implementations\ConsensusSequenceService.cs" />
     <Compile Include="Implementations\NeedlemanWunschService.cs" />
+    <Compile Include="Implementations\ProfileMatrixService.cs" />
     <Compile Include="Models\Multialignment.cs" />
     <Compile Include="Models\Sequence.cs" />
     <Compile Include="Program.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="Interfaces\INeedlemanWunschService.cs" />
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\IProfileMatrixService.cs" />
+    <Compile Include="Implementations\DataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -4,6 +4,6 @@ namespace ProteinSequenceAlignment.Models
 {
 	public class Multialignment
 	{
-		public IEnumerable<string> Sequences { get; set; }
+		public IList<string> Sequences { get; set; }
 	}
 }
