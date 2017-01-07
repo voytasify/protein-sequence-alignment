@@ -5,9 +5,9 @@ namespace ProteinSequenceAlignment
 {
 	public class Program
 	{			
-		private static IEnumerable<Multialignment> _multialignments;
-		private static float[,] _similarityMatrix;
-		private static string _dictionary;
+		public static IEnumerable<Multialignment> Multialignments;
+		public static float[,] SimilarityMatrix;
+		public static string Dictionary;
 
 		static void Main(string[] args)
 		{

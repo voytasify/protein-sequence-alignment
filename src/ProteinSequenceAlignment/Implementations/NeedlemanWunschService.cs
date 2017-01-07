@@ -9,12 +9,10 @@ namespace ProteinSequenceAlignment.Implementations
 	public class NeedlemanWunschService : INeedlemanWunschService
 	{
 		readonly Dictionary<string, int> lookup = new Dictionary<string, int>();
-		readonly private int[,] matrix = new int[24, 24];
-		const int DefaultMismatchPenalty = -4;
 		static readonly string NL = Environment.NewLine;
 
 		// trace back
-		const string DONE = @"¤";
+		const string DONE = @"ï¿½";
 		const string DIAG = @"\";
 		const string UP = @"|";
 		const string LEFT = @"-";
@@ -24,12 +22,12 @@ namespace ProteinSequenceAlignment.Implementations
 
 		public string Merge(string sequence, string otherSequence)
 		{
+			var res = SequenceAlign(sequence, otherSequence);
 			return string.Empty;
 		}
 
 		Sequence SequenceAlign(string xs, string ys)
 		{
-			const int p = -4; //gap penalty, knowledge by looking at matrix file
 			int m = xs.Length;
 			int n = ys.Length;
 
@@ -38,9 +36,9 @@ namespace ProteinSequenceAlignment.Implementations
 			var T = new string[m + 1, n + 1]; // trace back
 
 			for (int i = 0; i < m + 1; i++)
-				M[i, 0] = i * p;
+				M[i, 0] = i;
 			for (int j = 0; j < n + 1; j++)
-				M[0, j] = j * p;
+				M[0, j] = j;
 
 			T[0, 0] = DONE;
 			for (int i = 1; i < m + 1; i++)
@@ -55,8 +53,8 @@ namespace ProteinSequenceAlignment.Implementations
 				{
 					var alpha = Alpha(xs.ElementAt(i - 1).ToString(), ys.ElementAt(j - 1).ToString());
 					var diag = alpha + M[i - 1, j - 1];
-					var up = p + M[i - 1, j];
-					var left = p + M[i, j - 1];
+					var up = M[i - 1, j];
+					var left = M[i, j - 1];
 					var max = Max(diag, up, left);
 					M[i, j] = max;
 
@@ -118,16 +116,12 @@ namespace ProteinSequenceAlignment.Implementations
 
 		int Alpha(string x, string y)
 		{
-			if (lookup.ContainsKey(x) && lookup.ContainsKey(y))
-			{
-				var i = lookup[x];
-				var j = lookup[y];
-				return matrix[i, j];
-			}
-			else if (x == y)
-				return 1; // matrix file match * with *
+			if (!lookup.ContainsKey(x) || !lookup.ContainsKey(y))
+				throw new ArgumentException($"Similarity matrix does not contain value for specified keys: {x}, {y}");
 
-			return DefaultMismatchPenalty; // default mismatch penalty
+			var i = lookup[x];
+			var j = lookup[y];
+			return matrix[i, j];
 		}
 
 		static void PrintMatrix<T>(T[,] A, int I, int J)
