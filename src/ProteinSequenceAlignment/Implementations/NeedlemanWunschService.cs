@@ -8,7 +8,6 @@ namespace ProteinSequenceAlignment.Implementations
 {
 	public class NeedlemanWunschService : INeedlemanWunschService
 	{
-		readonly Dictionary<string, int> lookup = new Dictionary<string, int>();
 		static readonly string NL = Environment.NewLine;
 
 		// trace back
@@ -24,6 +23,11 @@ namespace ProteinSequenceAlignment.Implementations
 		{
 			var res = SequenceAlign(sequence, otherSequence);
 			return string.Empty;
+		}
+
+		private int LookUpIndex(char character)
+		{
+			return Program.Dictionary.IndexOf(character);
 		}
 
 		Sequence SequenceAlign(string xs, string ys)
@@ -51,7 +55,7 @@ namespace ProteinSequenceAlignment.Implementations
 			{
 				for (int j = 1; j < n + 1; j++)
 				{
-					var alpha = Alpha(xs.ElementAt(i - 1).ToString(), ys.ElementAt(j - 1).ToString());
+					var alpha = Alpha(xs.ElementAt(i - 1), ys.ElementAt(j - 1));
 					var diag = alpha + M[i - 1, j - 1];
 					var up = M[i - 1, j];
 					var left = M[i, j - 1];
@@ -114,14 +118,14 @@ namespace ProteinSequenceAlignment.Implementations
 			return sequence;
 		}
 
-		int Alpha(string x, string y)
+		float Alpha(char character, char otherCharacter)
 		{
-			if (!lookup.ContainsKey(x) || !lookup.ContainsKey(y))
-				throw new ArgumentException($"Similarity matrix does not contain value for specified keys: {x}, {y}");
+			var charIndex = LookUpIndex(character);
+			var otherCharIndex = LookUpIndex(otherCharacter);
+			if (charIndex == -1 || otherCharIndex == -1)
+				throw new ArgumentException($"Similarity matrix does not contain value for specified keys: {character}, {otherCharIndex}");
 
-			var i = lookup[x];
-			var j = lookup[y];
-			return matrix[i, j];
+			return Program.SimilarityMatrix[charIndex, otherCharIndex];
 		}
 
 		static void PrintMatrix<T>(T[,] A, int I, int J)
@@ -168,7 +172,7 @@ namespace ProteinSequenceAlignment.Implementations
 			return new string(arr);
 		}
 
-		static int Max(int a, int b, int c)
+		static int Max(float a, float b, float c)
 		{
 			if (a >= b && a >= c)
 				return a;
