@@ -36,7 +36,7 @@ namespace ProteinSequenceAlignment.Implementations
 			int n = ys.Length;
 
 			// init the matrix
-			var M = new int[m + 1, n + 1]; // dynamic programming buttom up memory table
+			var M = new float[m + 1, n + 1]; // dynamic programming buttom up memory table
 			var T = new string[m + 1, n + 1]; // trace back
 
 			for (int i = 0; i < m + 1; i++)
@@ -108,11 +108,10 @@ namespace ProteinSequenceAlignment.Implementations
 				second = ys;
 			}
 
-			PL("\nScore table");
-			PrintMatrix(M, m + 1, n + 1);
-			PL("\nTraceBack");
+			//PL("\nScore table");
+			//PrintMatrix(M, m + 1, n + 1);
+			//PL("\nTraceBack");
 			PrintMatrix(T, m + 1, n + 1);
-			PL();
 
 			var sequence = new Sequence() { Score = M[m, n], Path = traceBack, One = first, Two = second };
 			return sequence;
@@ -135,9 +134,9 @@ namespace ProteinSequenceAlignment.Implementations
 				for (int j = 0; j < J; j++)
 				{
 					var v = A[i, j];
-					P(v + " ");
+					Console.Write(v + " ");
 				}
-				PL();
+				Console.WriteLine();
 			}
 		}
 
@@ -172,7 +171,7 @@ namespace ProteinSequenceAlignment.Implementations
 			return new string(arr);
 		}
 
-		static int Max(float a, float b, float c)
+		static float Max(float a, float b, float c)
 		{
 			if (a >= b && a >= c)
 				return a;
@@ -183,7 +182,7 @@ namespace ProteinSequenceAlignment.Implementations
 
 		class Sequence
 		{
-			public int Score { get; set; }
+			public float Score { get; set; }
 			public string Path { get; set; }
 			public string One { get; set; }
 			public string Two { get; set; }
@@ -193,9 +192,5 @@ namespace ProteinSequenceAlignment.Implementations
 				return s;
 			}
 		}
-
-		public static void PL(object o) { Console.WriteLine(o); } //alias
-		public static void PL() { Console.WriteLine(); } //alias
-		public static void P(object o) { Console.Write(o); } //alias
 	}
 }
