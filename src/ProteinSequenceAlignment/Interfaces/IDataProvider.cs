@@ -5,7 +5,7 @@ namespace ProteinSequenceAlignment.Interfaces
 {
 	public interface IDataProvider
 	{
-		IEnumerable<Multialignment> GetMultialignments();
+		IList<Multialignment> GetMultialignments();
 		float[,] GetSimilarityMatrix();
 		string GetDictionary();
 	}

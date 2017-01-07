@@ -50,6 +50,7 @@
     <Compile Include="Interfaces\INeedlemanWunschService.cs" />
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\IProfileMatrixService.cs" />
+    <Compile Include="Implementations\DataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
