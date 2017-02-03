@@ -8,8 +8,8 @@ namespace ProteinSequenceAlignment.Implementations
 	{
 		public float[,] ComputeProfileMatrix(Multialignment multialignment)
 		{
-			var profileMatrix = new float[Dictionary.Length, Dictionary.Length];
-
+//			var profileMatrix = new float[Dictionary.Length, Dictionary.Length];
+            var profileMatrix = new float[multialignment.Sequences[0].Length, Dictionary.Length]; 
 			foreach (var sequence in multialignment.Sequences)
 			{
 				for (var col = 0; col < sequence.Length; ++col)

@@ -8,13 +8,11 @@ namespace ProteinSequenceAlignment.Implementations
 {
 	public class NeedlemanWunschService : INeedlemanWunschService
 	{
-		// trace back
 		const string DONE = @"�";
 		const string DIAG = @"\";
 		const string UP = @"|";
 		const string LEFT = @"-";
 
-		// print alignment
 		const string GAP = @"-";
 
 		public Sequence Merge(string sequence, string otherSequence)
@@ -36,7 +34,6 @@ namespace ProteinSequenceAlignment.Implementations
 			for (var j = 1; j < n + 1; j++)
 				T[0, j] = LEFT;
 
-			// calc
 			for (var i = 1; i < m + 1; i++)
 			{
 				for (var j = 1; j < n + 1; j++)

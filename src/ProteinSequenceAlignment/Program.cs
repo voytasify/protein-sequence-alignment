@@ -27,7 +27,8 @@ namespace ProteinSequenceAlignment
 			var secondConsensusSequence = ConsesnsusSequenceService.ComputeConsensusSequence(SimilarityMatrix, secondProfileMatrix);
 			var wunschOutputSequence = NeedlemanWunschService.Merge(consensusSequence, secondConsensusSequence);
 
-			Console.WriteLine($"NeedlemanWunsch otput:\n {wunschOutputSequence}");
+            Console.WriteLine($"SECOND CONSENUS SEQUENCE: {secondConsensusSequence}");
+            Console.WriteLine($"NeedlemanWunsch output:\n {wunschOutputSequence}");
 			Console.Read();
 		}
 

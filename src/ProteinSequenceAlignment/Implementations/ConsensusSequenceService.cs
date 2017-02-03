@@ -16,14 +16,14 @@ namespace ProteinSequenceAlignment.Implementations
 			{
 				for (var col = 0; col < consensusArray.GetLength(0); ++col)
 				{
-					consensusArray[col, row] *= similarityMatrix.GetRow(row).Sum();
+					consensusArray[col, row] *= similarityMatrix.GetCol(row).Sum();
 				}
 			}
 
 			var consensusSequence = new char[consensusArray.GetLength(0)];
 			for (var col = 0; col < consensusArray.GetLength(0); ++col)
 			{
-				var column = consensusArray.GetCol(col).ToList();
+				var column = consensusArray.GetRow(col).ToList();
 				var maxRowIndex = column.IndexOf(column.Max());
 				consensusSequence[col] = Dictionary[maxRowIndex];
 			}
